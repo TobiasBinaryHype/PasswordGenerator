@@ -1,6 +1,7 @@
 "use strict";
 
 class PasswordGenator {
+    
     constructor(lengthPW = 12, lower = true, upper = true, numeric = true, special = true) {
         this.selectedTypes = {
             lower: lower,
@@ -16,6 +17,11 @@ class PasswordGenator {
             SPECIAL: "special",
             RANDOM: "random",
         };
+        
+        this.numeric = "1234567890";
+        this.lowerAlphabet = "abcdefghijklmopqrstuvwxyz";
+        this.upperAlphabet = "ABCDEFGHIJKLMOPQRSTUVWXYZ";
+        this.specialChars = "!{}=$%&#+*<>";
 
         this.lengthPW = lengthPW;
     }
@@ -61,47 +67,41 @@ class PasswordGenator {
                 ] = this.getRandomSymbol(type);
             }
 
-            this.resultPassword = resultPassword.join("");
-            return this.resultPassword;
+            return resultPassword.join("");
         } else {
-            this.error = "At least one type of symbol needed.";
+            throw "At least one type of symbol needed";
         }
     }
 
     getRandomSymbol(type) {
-        let numeric = "1234567890";
-        let lowerAlphabet = "abcdefghijklmopqrstuvwxyz";
-        let upperAlphabet = "ABCDEFGHIJKLMOPQRSTUVWXYZ";
-        let specialChars = "!{}=$%&#+*<>";
-
         let symbol = "";
 
         switch (type) {
             case this.passwordEnum.NUMERIC: {
-                symbol = numeric[this.getRandomNumber(numeric.length - 1)];
+                symbol = this.numeric[this.getRandomNumber(this.numeric.length - 1)];
                 break;
             }
 
             case this.passwordEnum.LOWER: {
                 symbol =
-                    lowerAlphabet[
-                        this.getRandomNumber(lowerAlphabet.length - 1)
+                this.lowerAlphabet[
+                        this.getRandomNumber(this.lowerAlphabet.length - 1)
                     ];
                 break;
             }
 
             case this.passwordEnum.UPPER: {
                 symbol =
-                    upperAlphabet[
-                        this.getRandomNumber(upperAlphabet.length - 1)
+                this.upperAlphabet[
+                        this.getRandomNumber(this.upperAlphabet.length - 1)
                     ];
                 break;
             }
 
             case this.passwordEnum.SPECIAL: {
                 symbol =
-                    specialChars[
-                        this.getRandomNumber(specialChars.length - 1)
+                this.specialChars[
+                        this.getRandomNumber(this.specialChars.length - 1)
                     ];
                 break;
             }
@@ -110,19 +110,19 @@ class PasswordGenator {
                 let base = "";
 
                 if (this.selectedTypes.numeric) {
-                    base += numeric;
+                    base += this.numeric;
                 }
 
                 if (this.selectedTypes.lower) {
-                    base += lowerAlphabet;
+                    base += this.lowerAlphabet;
                 }
 
                 if (this.selectedTypes.upper) {
-                    base += upperAlphabet;
+                    base += this.upperAlphabet;
                 }
 
                 if (this.selectedTypes.special) {
-                    base += specialChars;
+                    base += this.specialChars;
                 }
 
                 symbol = base[this.getRandomNumber(base.length - 1)];
